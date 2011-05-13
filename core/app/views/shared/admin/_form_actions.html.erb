@@ -16,7 +16,7 @@
     end
     cancel_button_id    ||= "cancel_button"
 
-    cancel_url          ||= (((back = url_for(:back)).include?('javascript') or action_name =~ /^(create|update)$/) ? send("admin_#{f.object_name.to_s.pluralize}_url") : back)
+    cancel_url          ||= (((back = url_for(:back)).include?('javascript') or action_name =~ /^(create|update)$/) ? send("admin_#{f.object_name.to_s.pluralize}_path") : back)
   end
 
   continue_editing = defined?(continue_editing) ? continue_editing : (f.object.present? and f.object.persisted?)
@@ -32,7 +32,7 @@
     delete_title        ||= nil
     delete_confirmation ||= nil
     delete_button_id    ||= "delete_button"
-    delete_url          ||= eval("admin_#{f.object_name}_url(#{f.object.id})")
+    delete_url          ||= eval("admin_#{f.object_name}_path(#{f.object.id})")
   end
 
   paginate_collection = nil
@@ -57,13 +57,13 @@
     <%= render :partial => "/shared/admin/continue_editing", :locals => {:f => f} if continue_editing -%>
     <%= hidden_field_tag :continue_editing, false if continue_editing %>
 
-    <%= link_to(cancel_button_text, cancel_path,
+    <%= link_to(cancel_button_text, cancel_url,
                 :title => cancel_title,
                 :id => cancel_button_id,
                 :class => "close_dialog button") unless hide_cancel %>
   </div>
   <div class='form-actions-right'>
-    <%= link_to(delete_button_text, delete_path,
+    <%= link_to(delete_button_text, delete_url,
                 :title => delete_title,
                 :id => delete_button_id,
                 :method => :delete,
