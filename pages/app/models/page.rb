@@ -262,8 +262,11 @@ class Page < ActiveRecord::Base
     end
 
     def expire_page_caching
-      if File.writable?(Rails.cache.cache_path)
-        Pathname.glob(File.join(Rails.cache.cache_path, '**', '*pages*')).each(&:delete)
+      begin
+        Rails.cache.delete_matched(/.*pages.*/)
+      rescue NotImplementedError
+        Rails.cache.clear
+        warn "**** [REFINERY] The cache store you are using is not compatible with Rails.cache#delete_matched - clearing entire cache instead ***"
       end
     end
   end
