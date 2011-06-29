@@ -8,7 +8,7 @@ module Refinery
         [
           (yield_title if yield_title.present?),
           @meta.browser_title.present? ? @meta.browser_title : @meta.path,
-          RefinerySetting.find_or_set(:site_name, "Company Name")
+          RefinerySetting.find_or_set(:site_name, "Strange Loop")
         ].compact.join(" - ")
       end
 
